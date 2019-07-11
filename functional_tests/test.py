@@ -1,3 +1,4 @@
+import os
 import time
 
 from selenium import webdriver
@@ -13,6 +14,9 @@ MAX_WAIT = 3
 class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
         self.browser = webdriver.Firefox()
 
     def tearDown(self):
@@ -121,6 +125,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def test_layout_and_styling(self):
         # Edith goes to the home page
         self.browser.get(self.live_server_url)
+        self.browser.set_window_position(0, 0)
         self.browser.set_window_size(1024, 768)
 
         # She notices the input box is nicely centered
